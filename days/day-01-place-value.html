@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Secret Code of Numbers — Chapter 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A4A; --blue:#2E6FEE; --teal:#0FA898; --orange:#F2994A; --purple:#8B5CF6; --red:#E5484D;
+    --navy-l:#E7EBF3; --blue-l:#E6EEFF; --teal-l:#E1F6F3; --orange-l:#FDECDC; --purple-l:#EFE8FE; --red-l:#FBE6E7;
+    --ink:#20293A; --muted:#5B6478; --paper:#FFFFFF; --bg:#F5F6FA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Lora',serif; line-height:1.6;
+  }
+  .page{max-width:880px;margin:0 auto;background:var(--paper);box-shadow:0 0 40px rgba(27,42,74,0.08);min-height:100vh;}
+  h1,h2,h3,h4,.ui{font-family:'Poppins',sans-serif;}
+  .hero{
+    background:linear-gradient(135deg,var(--navy) 0%,#233863 100%);
+    color:#fff; padding:40px 48px 34px;
+  }
+  .eyebrow{font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;color:#9DB8F0;margin:0 0 10px;}
+  .hero h1{font-size:2.3rem;margin:0 0 14px;font-weight:700;line-height:1.15;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#DCE6FB;
+    padding:5px 12px;border-radius:20px;font-size:13px;font-family:'Poppins',sans-serif;}
+  .hook{padding:28px 48px 6px;font-family:'Lora',serif;font-style:italic;font-size:1.15rem;color:var(--ink);}
+  .content{padding:0 48px 20px;}
+  .intro{color:var(--ink);}
+  .band{
+    font-family:'Poppins',sans-serif;font-weight:700;color:#fff;font-size:15px;
+    padding:11px 18px;border-radius:8px;margin:30px 0 16px;letter-spacing:0.2px;
+  }
+  .band.blue{background:var(--blue);} .band.teal{background:var(--teal);}
+  .band.orange{background:var(--orange);} .band.purple{background:var(--purple);}
+  .band .dot{opacity:0.8;margin:0 6px;}
+  p{margin:0 0 14px;}
+  .step{margin:0 0 12px;}
+  .callout{
+    border-left:5px solid var(--blue); background:var(--blue-l); border-radius:0 10px 10px 0;
+    padding:16px 20px; margin:16px 0;
+  }
+  .callout.teal{border-color:var(--teal);background:var(--teal-l);}
+  .callout.orange{border-color:var(--orange);background:var(--orange-l);}
+  .callout.purple{border-color:var(--purple);background:var(--purple-l);}
+  .callout.red{border-color:var(--red);background:var(--red-l);}
+  .callout .label{font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;
+    letter-spacing:0.4px;margin-bottom:6px;}
+  .callout.blue .label{color:var(--blue);} .callout.teal .label{color:var(--teal);}
+  .callout.orange .label{color:var(--orange);} .callout.purple .label{color:var(--purple);}
+  .callout.red .label{color:var(--red);}
+  .callout .big{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.4rem;color:var(--navy);margin:2px 0 8px;}
+  .callout p{margin:0 0 8px;}
+  .callout p:last-child{margin-bottom:0;}
+
+  /* ---------- base-10 manipulative ---------- */
+  .manip{
+    background:#FBFBFE;border:1px solid #E4E7F0;border-radius:14px;padding:22px;margin:18px 0;
+  }
+  .manip-controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center;}
+  button{
+    font-family:'Poppins',sans-serif;font-weight:600;font-size:13.5px;border:none;border-radius:8px;
+    padding:9px 16px;cursor:pointer;color:#fff;transition:transform .08s ease, opacity .15s ease;
+  }
+  button:active{transform:scale(0.96);}
+  button.b-one{background:var(--blue);} button.b-ten{background:var(--teal);}
+  button.b-hundred{background:var(--orange);} button.b-reset{background:#9AA4B8;}
+  button:disabled{opacity:0.4;cursor:not-allowed;}
+  .manip-readout{
+    font-family:'Poppins',sans-serif;font-weight:700;color:var(--navy);font-size:1.05rem;
+    margin-left:auto;background:#fff;border:1px solid #E4E7F0;border-radius:8px;padding:8px 14px;
+  }
+  .manip-readout small{display:block;font-weight:500;color:var(--muted);font-size:11px;margin-top:2px;}
+  .blocks-wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;min-height:130px;}
+  .flat-grid{display:grid;grid-template-columns:repeat(10,10px);grid-template-rows:repeat(10,10px);
+    gap:1px;background:var(--navy);padding:3px;border-radius:4px;}
+  .flat-grid .cell{background:var(--orange);}
+  .rod-grid{display:grid;grid-template-rows:repeat(10,10px);gap:1px;background:var(--navy);
+    padding:3px;border-radius:4px;width:16px;}
+  .rod-grid .cell{background:var(--teal);}
+  .one-cell{width:16px;height:16px;background:var(--blue);border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,0.15);}
+  .manip-note{font-size:12.5px;color:var(--muted);font-family:'Poppins',sans-serif;margin-top:12px;}
+
+  /* ---------- place value chart ---------- */
+  .pv-tag{border-left:5px solid var(--teal);background:var(--teal-l);border-radius:0 10px 10px 0;
+    padding:14px 20px;margin:18px 0 12px;}
+  .pv-tag .label{font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;color:var(--teal);
+    text-transform:uppercase;letter-spacing:0.4px;}
+  .pv-tag .num{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.7rem;color:var(--navy);margin-top:2px;}
+  .pv-chart{display:grid;grid-auto-flow:column;gap:0;border-radius:8px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(27,42,74,0.12); margin-bottom:10px;}
+  .pv-col{display:flex;flex-direction:column;cursor:pointer;user-select:none;}
+  .pv-head{color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:10.5px;text-align:center;
+    padding:8px 2px;line-height:1.25;}
+  .pv-digit{background:#fff;border:1px solid #E4E7F0;border-top:none;text-align:center;
+    font-family:'Poppins',sans-serif;font-weight:700;font-size:1.5rem;color:var(--navy);padding:12px 0;
+    transition:background .15s ease;}
+  .pv-col:hover .pv-digit{background:#F5F6FA;}
+  .pv-col.active .pv-digit{background:var(--navy);color:#fff;}
+  .pv-hint{font-family:'Poppins',sans-serif;font-size:12.5px;color:var(--muted);margin:0 0 16px;}
+  .pv-explain{font-family:'Poppins',sans-serif;font-size:13.5px;color:var(--navy);background:#F5F6FA;
+    border-radius:8px;padding:10px 14px;min-height:20px;}
+
+  /* ---------- explorer ---------- */
+  .explorer{background:linear-gradient(135deg,#F5F6FA,#EEF1F8);border:1px solid #E4E7F0;border-radius:14px;
+    padding:22px;margin:18px 0;}
+  .explorer h4{margin:0 0 4px;font-size:1rem;color:var(--navy);}
+  .explorer .sub{font-family:'Poppins',sans-serif;font-size:12.5px;color:var(--muted);margin-bottom:14px;}
+  .explorer input[type=text]{
+    font-family:'Poppins',sans-serif;font-weight:600;font-size:1.1rem;color:var(--navy);
+    border:2px solid var(--blue);border-radius:8px;padding:10px 14px;width:220px;max-width:100%;
+  }
+  .explorer-out{margin-top:16px;}
+  .expanded-eq{font-family:'Poppins',sans-serif;font-weight:600;font-size:1rem;color:var(--navy);
+    background:#fff;border-radius:8px;padding:12px 16px;margin:10px 0;word-break:break-word;border:1px solid #E4E7F0;}
+  .spoken{font-family:'Lora',serif;font-style:italic;color:var(--ink);}
+
+  /* ---------- comparing visual ---------- */
+  .compare-row{display:flex;align-items:center;gap:14px;margin:14px 0;flex-wrap:wrap;}
+  .digit-box{display:flex;}
+  .digit-box .d{width:30px;height:38px;display:flex;align-items:center;justify-content:center;
+    font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem;background:#fff;border:1px solid #E4E7F0;color:var(--navy);}
+  .digit-box .d.diff{background:var(--orange);color:#fff;border-color:var(--orange);}
+  .digit-box .d:first-child{border-radius:6px 0 0 6px;} .digit-box .d:last-child{border-radius:0 6px 6px 0;}
+  .vs{font-family:'Poppins',sans-serif;font-weight:700;color:var(--muted);}
+  .winner{font-family:'Poppins',sans-serif;font-weight:700;color:var(--orange);font-size:13px;}
+
+  /* ---------- number line ---------- */
+  .numline{margin:20px 0 8px;position:relative;height:90px;}
+  .nl-track{position:absolute;top:38px;left:10px;right:10px;height:2px;background:var(--navy);}
+  .nl-tick{position:absolute;top:32px;width:2px;height:14px;background:var(--navy);}
+  .nl-tick-label{position:absolute;top:50px;transform:translateX(-50%);font-family:'Poppins',sans-serif;font-size:11px;color:var(--muted);}
+  .nl-point{position:absolute;top:32px;width:14px;height:14px;border-radius:50%;background:var(--red);
+    transform:translate(-50%,0);box-shadow:0 1px 3px rgba(0,0,0,0.25);}
+  .nl-point-label{position:absolute;top:8px;transform:translateX(-50%);font-family:'Poppins',sans-serif;
+    font-weight:700;font-size:12.5px;color:var(--red);white-space:nowrap;}
+  .nl-caption{position:absolute;top:65px;right:0;font-family:'Lora',serif;font-style:italic;font-size:12.5px;color:var(--teal);}
+
+  /* ---------- recap ---------- */
+  .recap{background:var(--navy);color:#fff;border-radius:12px;padding:24px 26px;margin:28px 0 10px;}
+  .recap h3{margin:0 0 12px;font-size:1.15rem;}
+  .recap ul{margin:0;padding:0;list-style:none;}
+  .recap li{font-family:'Poppins',sans-serif;font-size:14px;padding:5px 0 5px 20px;position:relative;}
+  .recap li::before{content:"•";position:absolute;left:0;color:var(--blue);font-weight:700;}
+  .recap .close{font-family:'Lora',serif;font-style:italic;color:#AFC3F2;margin-top:12px;font-size:13.5px;}
+
+  /* ---------- homework ---------- */
+  .hw-title{padding:34px 48px 4px;}
+  .hw-title h2{margin:0 0 6px;color:var(--navy);font-size:1.6rem;}
+  .hw-title .sub{font-family:'Poppins',sans-serif;color:var(--muted);font-size:13.5px;}
+  .hw-item{display:flex;gap:10px;align-items:baseline;margin:12px 0;font-family:'Poppins',sans-serif;font-size:14px;flex-wrap:wrap;}
+  .hw-item .n{font-weight:700;color:var(--navy);min-width:20px;}
+  .hw-item input[type=text]{
+    font-family:'Poppins',sans-serif;border:none;border-bottom:2px dotted #C7CCDA;background:transparent;
+    padding:4px 2px;font-size:14px;color:var(--navy);flex:1;min-width:140px;
+  }
+  .hw-item input[type=text]:focus{outline:none;border-bottom-color:var(--blue);}
+  select.hw-select{font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;color:var(--navy);
+    border:1px solid #C7CCDA;border-radius:6px;padding:3px 8px;}
+  .feedback{font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;margin-left:4px;}
+  .feedback.ok{color:var(--teal);} .feedback.no{color:var(--red);}
+  .check-btn{margin:10px 0 4px;}
+  .footer{padding:20px 48px 40px;font-family:'Poppins',sans-serif;font-size:11.5px;color:var(--muted);
+    display:flex;justify-content:space-between;border-top:1px solid #EEF0F5;margin-top:20px;}
+  @media (max-width:600px){
+    .hero,.content,.hw-title,.footer{padding-left:22px;padding-right:22px;}
+    .hook{padding-left:22px;padding-right:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <p class="eyebrow">CHAPTER 1 &nbsp;•&nbsp; MODULE 1 &nbsp;•&nbsp; GRADE 5 MATH</p>
+    <h1>The Secret Code of Numbers</h1>
+    <div class="chips">
+      <span class="chip">Place Value to 10 Million</span>
+      <span class="chip">Expanded Form</span>
+      <span class="chip">Comparing</span>
+      <span class="chip">Rounding</span>
+    </div>
+  </div>
+
+  <p class="hook">Imagine every number is written in a secret code, and the code has just one rule: a digit's power depends on where it stands. Move a soldier one spot to the left in the line-up, and it suddenly commands ten times as many troops. Learn to read that code, and huge numbers stop being scary — they're just a lineup of digits, each one shouting its own value.</p>
+
+  <div class="content">
+    <p class="intro">This year we learn everything the same way, in the same order, every single time: <strong>Concrete</strong> (real objects in your hands) → <strong>Pictorial</strong> (a drawing that represents the same thing) → <strong>Abstract</strong> (the numbers and rules). This is how Singapore, one of the strongest math programs in the world, teaches every topic — so that's how we'll do it too.</p>
+
+    <!-- STAGE 1 -->
+    <div class="band blue">STAGE 1 <span class="dot">·</span> CONCRETE — BUILD IT WITH YOUR OWN CLICKS</div>
+    <p>Before real beans and rubber bands, play with the digital version below. Click <strong>+1</strong> a few times and watch what happens the instant you hit ten ones — they snap together into one ten. Keep going and watch ten tens snap into one hundred.</p>
+
+    <div class="manip">
+      <div class="manip-controls">
+        <button class="b-one" onclick="addUnits(1)">+ 1 one</button>
+        <button class="b-ten" onclick="addUnits(10)">+ 1 ten (10)</button>
+        <button class="b-hundred" onclick="addUnits(100)">+ 1 hundred (100)</button>
+        <button class="b-reset" onclick="resetManip()">Reset</button>
+        <div class="manip-readout" id="manipReadout">0<small>0 hundreds, 0 tens, 0 ones</small></div>
+      </div>
+      <div class="blocks-wrap" id="blocksWrap"></div>
+      <p class="manip-note">This hands-on demo caps out at 999 so the blocks stay easy to count — the chart below handles numbers all the way into the millions.</p>
+    </div>
+
+    <div class="callout blue">
+      <div class="label">Notice</div>
+      <p>Every single time, exactly 10 of the smaller group became exactly 1 of the next group up. That's the entire rule this whole chapter is built on. Everything below is just drawing and writing down what your hands (and your clicks) already just discovered.</p>
+    </div>
+
+    <!-- STAGE 2 -->
+    <div class="band teal">STAGE 2 <span class="dot">·</span> PICTORIAL — THE PLACE VALUE CHART</div>
+    <p>We can't physically bundle enough beans to build a number like six million, so instead we draw a picture of it: a place-value chart. Each column is exactly one more "bundle level" than the column next to it — the same pattern your clicks just built, continued all the way up. This year we'll work with numbers up to ten million — a 1 followed by seven zeros: 10,000,000.</p>
+
+    <div class="pv-tag">
+      <div class="label">A Number In The Millions</div>
+      <div class="num">6,384,972</div>
+    </div>
+    <p class="pv-hint">Click any column below to see what that digit is really worth.</p>
+    <div class="pv-chart" id="pvChart"></div>
+    <div class="pv-explain" id="pvExplain">Click a column above the number to see its value here.</div>
+
+    <p style="margin-top:18px;">Read straight across the chart: six million, three hundred eighty-four thousand, nine hundred seventy-two. Every digit's value is just "which column is it sitting in."</p>
+
+    <div class="explorer">
+      <h4>Try it yourself</h4>
+      <div class="sub">Type any whole number (up to 10,000,000) and watch the chart and the words update live.</div>
+      <input type="text" id="explorerInput" placeholder="e.g. 2481059" inputmode="numeric">
+      <div class="explorer-out">
+        <div class="pv-chart" id="explorerChart"></div>
+        <div class="expanded-eq" id="explorerExpanded">Expanded form will appear here.</div>
+        <p class="spoken" id="explorerWords"></p>
+      </div>
+    </div>
+
+    <!-- STAGE 3 -->
+    <div class="band purple">STAGE 3 <span class="dot">·</span> ABSTRACT — THE RULES, IN NUMBERS</div>
+    <p>Now we take what your hands and the chart already showed you, and write it using math itself: expanded form, comparing, and rounding — three different jobs, same one rule underneath.</p>
+
+    <div class="band teal">1 <span class="dot">·</span> EXPANDED FORM</div>
+    <p>Expanded form means breaking a number apart into what each digit is really worth, then adding those pieces back together. It turns a number from one confusing blob into a clear list of values you can actually reason about.</p>
+    <p><strong style="font-family:'Poppins',sans-serif;font-size:13px;color:var(--navy);">HOW TO DO IT, STEP BY STEP:</strong></p>
+    <p class="step">Step 1. Point at the first digit and say what place it's in (hundred-thousands, ten-thousands, thousands...).</p>
+    <p class="step">Step 2. Multiply the digit by its place value (e.g. a 4 in the hundred-thousands place = 4 × 100,000).</p>
+    <p class="step">Step 3. Repeat for every digit, then join them all with plus signs.</p>
+    <p>Same number from the chart above — now let's write out what it's really saying:</p>
+    <div class="callout teal">
+      <div class="label">Worked Example</div>
+      <div class="big">6,384,972</div>
+      <p>6,384,972 = 6,000,000 + 300,000 + 80,000 + 4,000 + 900 + 70 + 2</p>
+      <p>In powers of ten: (6×1,000,000) + (3×100,000) + (8×10,000) + (4×1,000) + (9×100) + (7×10) + (2×1)</p>
+    </div>
+    <div class="callout red">
+      <div class="label">Watch Out</div>
+      <p>A zero in a number still holds its place — it doesn't disappear. In 405,003 the ten-thousands and hundreds are both zero, but you still count that place when you're figuring out what the other digits are worth.</p>
+    </div>
+
+    <div class="band orange">2 <span class="dot">·</span> COMPARING NUMBERS</div>
+    <p>Don't compare two numbers as a whole "blob" — your eyes will trick you. Instead, compare digit by digit, left to right, and stop at the very first spot where they're different. Whichever number has the bigger digit there wins, no matter what happens after.</p>
+    <div class="callout orange">
+      <div class="label">Worked Example</div>
+      <p style="margin-bottom:12px;">Compare 5,462,908 and 5,462,890 — matching digits shown in white, the first difference highlighted:</p>
+      <div class="compare-row">
+        <div class="digit-box" id="cmpA"></div>
+        <span class="vs">vs</span>
+        <div class="digit-box" id="cmpB"></div>
+        <span class="winner">5,462,890 is bigger</span>
+      </div>
+      <p>Same first five digits: 5, 4, 6, 2, 9. Next digit: 0 vs 9. Since 0 is less than 9 — 5,462,890 is bigger, even though the numbers look almost like twins.</p>
+    </div>
+
+    <div class="band purple">3 <span class="dot">·</span> ROUNDING</div>
+    <p>Rounding is place value plus one rule. Look at the single digit sitting just to the right of the place you're rounding to: 5 or more, round up. Below 5, round down. Everything after that turns into a zero.</p>
+    <div class="callout purple">
+      <div class="label">Worked Example</div>
+      <p>Round 6,384,972 to the nearest hundred thousand</p>
+      <p>The hundred-thousands digit is 3. The digit right after it is 8 — 5 or more — round up. Watch what happens: the 3 becomes a 4, and everything after turns to zero.</p>
+      <p>Answer: 6,400,000</p>
+    </div>
+    <div class="numline">
+      <div class="nl-track"></div>
+      <div class="nl-tick" style="left:0%"></div><div class="nl-tick-label" style="left:0%">6,300,000</div>
+      <div class="nl-tick" style="left:50%"></div><div class="nl-tick-label" style="left:50%">6,350,000</div>
+      <div class="nl-tick" style="left:100%"></div><div class="nl-tick-label" style="left:100%">6,400,000</div>
+      <div class="nl-point" style="left:84.972%"></div>
+      <div class="nl-point-label" style="left:84.972%">6,384,972</div>
+      <div class="nl-caption">rounds up this way →</div>
+    </div>
+
+    <div class="recap">
+      <h3>Chapter 1 Recap</h3>
+      <ul>
+        <li>Concrete → Pictorial → Abstract: how we'll learn every topic this year, not just this one.</li>
+        <li>Expanded form: break each digit into its place value, then add the pieces.</li>
+        <li>Comparing: go digit by digit, left to right — stop at the first difference.</li>
+        <li>Rounding: check one digit to the right of your target place. 5+ up, below 5 down.</li>
+      </ul>
+      <div class="close">Nice work — scroll down and put all three moves to work on your own numbers.</div>
+    </div>
+  </div>
+
+  <!-- HOMEWORK -->
+  <div class="hw-title">
+    <h2>Chapter 1 Homework</h2>
+    <div class="sub">Put today's three skills to work — some numbers go into the millions. Should take about 10 minutes. Type your answers right in the boxes.</div>
+  </div>
+
+  <div class="content">
+    <div class="band teal">PART A <span class="dot">·</span> EXPANDED FORM</div>
+    <p class="pv-hint" style="margin-top:-6px;">Write each number in expanded form.</p>
+    <div id="partA"></div>
+
+    <div class="band orange">PART B <span class="dot">·</span> COMPARING</div>
+    <p class="pv-hint" style="margin-top:-6px;">Choose &lt;, &gt;, or = for each pair.</p>
+    <div id="partB"></div>
+    <button class="b-one check-btn" onclick="checkPartB()">Check Part B</button>
+
+    <div class="band purple">PART C <span class="dot">·</span> ROUNDING</div>
+    <p class="pv-hint" style="margin-top:-6px;">Round each number to the place shown.</p>
+    <div id="partC"></div>
+    <button class="b-one check-btn" onclick="checkPartC()">Check Part C</button>
+
+    <div class="callout blue" style="margin-top:22px;">
+      <div class="label">Bonus (optional)</div>
+      <p>Find a real number somewhere around the house — a receipt, a mileage sign, a price tag — and do all three moves to it: write it in expanded form, compare it to a number you make up, and round it two different ways.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Grade 5 Math with Claude</span>
+    <span>Chapter 1 — Interactive Edition</span>
+  </div>
+</div>
+
+<script>
+/* ---------------- helpers ---------------- */
+const PLACES = [
+  {name:"Millions", div:1000000}, {name:"Hundred\nThousands", div:100000},
+  {name:"Ten\nThousands", div:10000}, {name:"Thousands", div:1000},
+  {name:"Hundreds", div:100}, {name:"Tens", div:10}, {name:"Ones", div:1}
+];
+const COLORS = ["#2E6FEE","#0FA898","#F2994A","#8B5CF6","#2E6FEE","#0FA898","#F2994A"];
+const PLACE_VALUE_NAMES = ["millions","hundred-thousands","ten-thousands","thousands","hundreds","tens","ones"];
+
+function digitsOf(n){
+  const s = String(Math.max(0, Math.floor(n))).padStart(7,'0');
+  return s.slice(-7).split('');
+}
+function fmt(n){ return Number(n).toLocaleString('en-US'); }
+
+function buildChart(containerId, number, opts){
+  opts = opts || {};
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
+  const d = digitsOf(number);
+  d.forEach((digit,i)=>{
+    const col = document.createElement('div');
+    col.className = 'pv-col';
+    col.style.background = 'transparent';
+    const head = document.createElement('div');
+    head.className = 'pv-head';
+    head.style.background = COLORS[i];
+    head.innerText = PLACES[i].name;
+    const dig = document.createElement('div');
+    dig.className = 'pv-digit';
+    dig.innerText = digit;
+    col.appendChild(head); col.appendChild(dig);
+    if(opts.clickable){
+      col.addEventListener('click', ()=>{
+        document.querySelectorAll('#'+containerId+' .pv-col').forEach(c=>c.classList.remove('active'));
+        col.classList.add('active');
+        const val = Number(digit) * PLACES[i].div;
+        document.getElementById('pvExplain').innerHTML =
+          '<strong>'+digit+'</strong> in the <strong>'+PLACES[i].name.replace('\n',' ')+'</strong> place = '+
+          '<strong>'+fmt(val)+'</strong>';
+      });
+    }
+    el.appendChild(col);
+  });
+}
+
+/* ---------------- Stage 2 static chart ---------------- */
+buildChart('pvChart', 6384972, {clickable:true});
+
+/* ---------------- explorer ---------------- */
+function numberToWords(n){
+  n = Math.floor(n);
+  if(n===0) return "zero";
+  const ones=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve',
+    'thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  const tens=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  function three(num){
+    let s='';
+    if(num>=100){ s+=ones[Math.floor(num/100)]+' hundred'; num%=100; if(num>0) s+=' '; }
+    if(num>=20){ s+=tens[Math.floor(num/10)]; if(num%10>0) s+='-'+ones[num%10]; }
+    else if(num>0){ s+=ones[num]; }
+    return s;
+  }
+  const millions = Math.floor(n/1000000);
+  const thousands = Math.floor((n%1000000)/1000);
+  const rest = n%1000;
+  let parts = [];
+  if(millions) parts.push(three(millions)+' million');
+  if(thousands) parts.push(three(thousands)+' thousand');
+  if(rest || parts.length===0) parts.push(three(rest));
+  return parts.join(', ');
+}
+
+function runExplorer(){
+  const raw = document.getElementById('explorerInput').value.replace(/[^0-9]/g,'');
+  if(raw === ""){
+    document.getElementById('explorerExpanded').innerText = "Expanded form will appear here.";
+    document.getElementById('explorerWords').innerText = "";
+    buildChart('explorerChart', 0, {});
+    return;
+  }
+  let n = Math.min(Number(raw), 10000000);
+  buildChart('explorerChart', n, {});
+  const d = digitsOf(n);
+  let terms = [];
+  d.forEach((digit,i)=>{
+    const v = Number(digit) * PLACES[i].div;
+    if(v>0) terms.push(fmt(v));
+  });
+  document.getElementById('explorerExpanded').innerText =
+    terms.length ? fmt(n)+' = '+terms.join(' + ') : fmt(n)+' = 0';
+  document.getElementById('explorerWords').innerText = fmt(n)+' reads as: '+numberToWords(n)+'.';
+}
+document.getElementById('explorerInput').addEventListener('input', runExplorer);
+runExplorer();
+
+/* ---------------- Stage 1 manipulative ---------------- */
+let manip = {hundreds:0, tens:0, ones:0};
+function addUnits(n){
+  let total = manip.hundreds*100 + manip.tens*10 + manip.ones + n;
+  if(total > 999) total = 999;
+  manip.hundreds = Math.floor(total/100);
+  manip.tens = Math.floor((total%100)/10);
+  manip.ones = total%10;
+  renderManip();
+}
+function resetManip(){ manip = {hundreds:0,tens:0,ones:0}; renderManip(); }
+function renderManip(){
+  const wrap = document.getElementById('blocksWrap');
+  wrap.innerHTML = "";
+  for(let h=0; h<manip.hundreds; h++){
+    const flat = document.createElement('div');
+    flat.className = 'flat-grid';
+    for(let i=0;i<100;i++){ const c=document.createElement('div'); c.className='cell'; flat.appendChild(c); }
+    wrap.appendChild(flat);
+  }
+  for(let t=0; t<manip.tens; t++){
+    const rod = document.createElement('div');
+    rod.className = 'rod-grid';
+    for(let i=0;i<10;i++){ const c=document.createElement('div'); c.className='cell'; rod.appendChild(c); }
+    wrap.appendChild(rod);
+  }
+  for(let o=0; o<manip.ones; o++){
+    const one = document.createElement('div');
+    one.className = 'one-cell';
+    wrap.appendChild(one);
+  }
+  const total = manip.hundreds*100 + manip.tens*10 + manip.ones;
+  document.getElementById('manipReadout').innerHTML =
+    fmt(total)+'<small>'+manip.hundreds+' hundreds, '+manip.tens+' tens, '+manip.ones+' ones</small>';
+}
+renderManip();
+
+/* ---------------- comparing visual ---------------- */
+function buildCompare(containerId, number){
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
+  const d = String(number).split('');
+  d.forEach((ch)=>{
+    const box = document.createElement('div');
+    box.className = 'd';
+    box.innerText = ch;
+    el.appendChild(box);
+  });
+}
+buildCompare('cmpA','5462908');
+buildCompare('cmpB','5462890');
+// highlight the first differing digit (index 5, the tens digit: 0 vs 9)
+document.querySelectorAll('#cmpA .d')[5].classList.add('diff');
+document.querySelectorAll('#cmpB .d')[5].classList.add('diff');
+
+/* ---------------- homework: Part A (expanded form, free entry) ---------------- */
+const partAItems = ["58,741","203,916","6,004,382","91,027","740,005"];
+const partAEl = document.getElementById('partA');
+partAItems.forEach((num,i)=>{
+  const row = document.createElement('div');
+  row.className = 'hw-item';
+  row.innerHTML = '<span class="n">'+(i+1)+'.</span> <span>'+num+' =</span> <input type="text" placeholder="type expanded form here">';
+  partAEl.appendChild(row);
+});
+
+/* ---------------- homework: Part B (comparing, select + check) ---------------- */
+const partBItems = [
+  {a:"74,205", b:"74,250", ans:"<"},
+  {a:"618,300", b:"618,300", ans:"="},
+  {a:"9,432", b:"94,320", ans:"<"},
+  {a:"305,761", b:"305,716", ans:">"},
+  {a:"3,462,190", b:"3,462,910", ans:"<"},
+];
+const partBEl = document.getElementById('partB');
+partBItems.forEach((item,i)=>{
+  const row = document.createElement('div');
+  row.className = 'hw-item';
+  row.innerHTML = '<span class="n">'+(i+6)+'.</span> <span>'+item.a+'</span>'+
+    '<select class="hw-select" data-i="'+i+'"><option value="">?</option>'+
+    '<option value="<">&lt;</option><option value=">">&gt;</option><option value="=">=</option></select>'+
+    '<span>'+item.b+'</span><span class="feedback" id="fbB'+i+'"></span>';
+  partBEl.appendChild(row);
+});
+function checkPartB(){
+  const selects = partBEl.querySelectorAll('select');
+  selects.forEach((sel)=>{
+    const i = sel.dataset.i;
+    const fb = document.getElementById('fbB'+i);
+    if(sel.value === "") { fb.textContent = ""; return; }
+    if(sel.value === partBItems[i].ans){ fb.textContent = "correct"; fb.className='feedback ok'; }
+    else { fb.textContent = "try again"; fb.className='feedback no'; }
+  });
+}
+
+/* ---------------- homework: Part C (rounding, text + check) ---------------- */
+const partCItems = [
+  {q:"Round 36,482 to the nearest thousand:", ans:["36000","36,000"]},
+  {q:"Round 36,482 to the nearest hundred:", ans:["36500","36,500"]},
+  {q:"Round 704,650 to the nearest ten thousand:", ans:["700000","700,000"]},
+  {q:"Round 9,499 to the nearest hundred:", ans:["9500","9,500"]},
+  {q:"Round 6,284,972 to the nearest hundred thousand:", ans:["6300000","6,300,000"]},
+];
+const partCEl = document.getElementById('partC');
+partCItems.forEach((item,i)=>{
+  const row = document.createElement('div');
+  row.className = 'hw-item';
+  row.innerHTML = '<span class="n">'+(i+11)+'.</span> <span>'+item.q+'</span>'+
+    '<input type="text" data-i="'+i+'" style="max-width:140px;" placeholder="your answer">'+
+    '<span class="feedback" id="fbC'+i+'"></span>';
+  partCEl.appendChild(row);
+});
+function checkPartC(){
+  const inputs = partCEl.querySelectorAll('input');
+  inputs.forEach((inp)=>{
+    const i = inp.dataset.i;
+    const fb = document.getElementById('fbC'+i);
+    const val = inp.value.replace(/\s/g,'');
+    if(val === ""){ fb.textContent = ""; return; }
+    if(partCItems[i].ans.includes(val)){ fb.textContent = "correct"; fb.className='feedback ok'; }
+    else { fb.textContent = "try again"; fb.className='feedback no'; }
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 5 Math Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A4A; --blue:#2E6FEE; --teal:#0FA898; --orange:#F2994A; --purple:#8B5CF6; --red:#E5484D;
+    --navy-l:#E7EBF3; --blue-l:#E6EEFF; --teal-l:#E1F6F3; --orange-l:#FDECDC; --purple-l:#EFE8FE;
+    --ink:#20293A; --muted:#5B6478; --paper:#FFFFFF; --bg:#F5F6FA;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Lora',serif;line-height:1.6;}
+  .page{max-width:880px;margin:0 auto;background:var(--paper);box-shadow:0 0 40px rgba(27,42,74,0.08);min-height:100vh;}
+  h1,h2,h3,h4,.ui{font-family:'Poppins',sans-serif;}
+  .hero{background:linear-gradient(135deg,var(--navy) 0%,#233863 100%);color:#fff;padding:44px 48px 36px;}
+  .eyebrow{font-family:'Poppins',sans-serif;font-weight:700;font-size:13px;letter-spacing:1.5px;color:#9DB8F0;margin:0 0 10px;}
+  .hero h1{font-size:2.1rem;margin:0 0 10px;font-weight:700;line-height:1.2;}
+  .hero p{font-family:'Lora',serif;font-style:italic;color:#C9D6F2;margin:0;font-size:1rem;}
+  .content{padding:34px 48px 48px;}
+  .day-list{display:flex;flex-direction:column;gap:14px;margin-top:8px;}
+  .day-card{
+    display:flex;align-items:center;gap:18px;text-decoration:none;color:var(--ink);
+    border:1px solid #E4E7F0;border-radius:12px;padding:18px 20px;transition:box-shadow .15s ease, transform .15s ease;
+  }
+  .day-card:hover{box-shadow:0 6px 20px rgba(27,42,74,0.1);transform:translateY(-1px);}
+  .day-num{
+    font-family:'Poppins',sans-serif;font-weight:800;font-size:1.1rem;color:#fff;background:var(--blue);
+    width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .day-info{flex:1;min-width:0;}
+  .day-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1.02rem;color:var(--navy);margin:0 0 4px;}
+  .day-meta{font-family:'Poppins',sans-serif;font-size:12.5px;color:var(--muted);}
+  .day-arrow{font-family:'Poppins',sans-serif;font-weight:700;color:var(--blue);font-size:1.2rem;flex-shrink:0;}
+  .empty-note{font-family:'Poppins',sans-serif;font-size:13px;color:var(--muted);margin-top:18px;padding:14px 18px;
+    background:var(--blue-l);border-radius:10px;border-left:4px solid var(--blue);}
+  .footer{padding:20px 48px 40px;font-family:'Poppins',sans-serif;font-size:11.5px;color:var(--muted);
+    display:flex;justify-content:space-between;border-top:1px solid #EEF0F5;margin-top:10px;}
+  @media (max-width:600px){
+    .hero,.content,.footer{padding-left:22px;padding-right:22px;}
+    .day-card{padding:14px 16px;gap:12px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hero">
+    <p class="eyebrow">GRADE 5 MATH &nbsp;•&nbsp; DAILY LESSONS</p>
+    <h1>Grade 5 Math Daily</h1>
+    <p>A new interactive lesson + homework worksheet every school day. Pick a day below to jump in.</p>
+  </div>
+  <div class="content">
+    <div class="day-list" id="dayList"></div>
+    <div class="empty-note" id="emptyNote" style="display:none;">More lessons appear here automatically each school day.</div>
+  </div>
+  <div class="footer">
+    <span>Grade 5 Math Daily</span>
+    <span id="lastUpdated"></span>
+  </div>
+</div>
+
+<script>
+/* Each new day's automation run appends one entry here, then adds the matching file under days/. */
+const LESSONS = [
+  {
+    day: 1,
+    title: "The Secret Code of Numbers",
+    topic: "Place Value to 10 Million · Expanded Form · Comparing · Rounding",
+    date: "2026-08-19",
+    href: "days/day-01-place-value.html"
+  }
+];
+
+const list = document.getElementById('dayList');
+LESSONS.slice().reverse().forEach(l => {
+  const a = document.createElement('a');
+  a.className = 'day-card';
+  a.href = l.href;
+  a.innerHTML =
+    '<div class="day-num">D' + l.day + '</div>' +
+    '<div class="day-info">' +
+      '<div class="day-title">' + l.title + '</div>' +
+      '<div class="day-meta">' + l.topic + '</div>' +
+    '</div>' +
+    '<div class="day-arrow">&rarr;</div>';
+  list.appendChild(a);
+});
+if (LESSONS.length === 0) document.getElementById('emptyNote').style.display = 'block';
+
+const last = LESSONS[LESSONS.length - 1];
+if (last) document.getElementById('lastUpdated').textContent = 'Last updated: ' + last.date;
+</script>
+</body>
+</html>
