@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)file:///C:/Users/p_sak/Downloads/day-02-multiplication_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 2 — Building the Multiplication Machine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./day-02-Building-the-Multiplication-Machine_files/css2" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1b2a4a;
+    --blue:#2f6fed;
+    --teal:#0fa3a3;
+    --orange:#ef8a3d;
+    --purple:#7c5cd6;
+    --red:#e0524d;
+    --ink:#22283a;
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --line:#e4e1d8;
+    --shadow: 0 10px 30px rgba(27,42,74,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Lora', Georgia, serif;
+    line-height:1.6;
+    padding-bottom:60px;
+  }
+  h1,h2,h3,h4,.chip,.band,button,.eyebrow{font-family:'Poppins', sans-serif;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 20px;}
+
+  .hero{
+    background:linear-gradient(135deg, var(--navy), #253a63 60%, var(--blue));
+    color:#fff;
+    padding:48px 20px 40px;
+    margin-bottom:36px;
+  }
+  .hero .wrap{text-align:center;}
+  .eyebrow{
+    display:inline-block;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    background:rgba(255,255,255,0.14);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:16px;
+    font-weight:600;
+  }
+  .hero h1{
+    font-size:34px;
+    margin:0 0 10px;
+    font-weight:800;
+    line-height:1.25;
+  }
+  .hero p.sub{
+    font-family:'Lora', serif;
+    font-size:17px;
+    color:#dbe3f7;
+    max-width:560px;
+    margin:0 auto 22px;
+  }
+  .chips{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+  .chip{
+    font-size:13px;
+    font-weight:600;
+    padding:7px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.28);
+  }
+
+  section{margin-bottom:34px;}
+  .band{
+    color:#fff;
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    padding:10px 16px;
+    border-radius:10px;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .band .tag{
+    background:rgba(255,255,255,0.22);
+    border-radius:6px;
+    padding:2px 8px;
+    font-size:12px;
+  }
+  .band.navy{background:var(--navy);}
+  .band.blue{background:var(--blue);}
+  .band.teal{background:var(--teal);}
+  .band.orange{background:var(--orange);}
+  .band.purple{background:var(--purple);}
+  .band.red{background:var(--red);}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+    box-shadow:var(--shadow);
+    margin-bottom:18px;
+  }
+
+  .hook{font-size:17px; color:#3a3f52;}
+
+  .callout{
+    border-left:6px solid var(--teal);
+    background:#f3fbfa;
+    border-radius:0 12px 12px 0;
+    padding:16px 20px;
+    margin:14px 0;
+  }
+  .callout.orange{border-color:var(--orange); background:#fdf5ec;}
+  .callout.purple{border-color:var(--purple); background:#f5f2fc;}
+  .callout.blue{border-color:var(--blue); background:#eef4fe;}
+  .callout h4{margin:0 0 8px; font-size:15px; color:var(--navy);}
+  .callout .step{font-weight:600; color:var(--navy);}
+
+  .array-grid{
+    display:grid;
+    grid-template-columns:repeat(10, 18px);
+    gap:4px;
+    margin:14px 0;
+  }
+  .array-grid .dot{
+    width:18px; height:18px; border-radius:4px; background:var(--blue);
+  }
+  .array-grid .dot.ones{background:var(--orange);}
+
+  .area-model{
+    display:flex;
+    gap:6px;
+    margin:16px 0;
+    flex-wrap:wrap;
+  }
+  .area-model .block{
+    flex:1;
+    min-width:120px;
+    border-radius:10px;
+    padding:16px;
+    color:#fff;
+    font-weight:700;
+    text-align:center;
+    font-family:'Poppins',sans-serif;
+  }
+  .area-model .tens{background:var(--blue);}
+  .area-model .ones{background:var(--orange);}
+  .area-model .block small{display:block; font-weight:500; font-size:12px; opacity:0.9; margin-top:4px;}
+
+  .bar-model{margin:16px 0;}
+  .bar-row{display:flex; align-items:center; gap:8px; margin-bottom:6px;}
+  .bar-seg{
+    height:34px; border-radius:6px; background:var(--purple); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-size:13px; font-weight:600;
+  }
+  .bar-total{font-size:13px; color:#555; margin-top:4px;}
+
+  .recap{
+    background:#fff7ea;
+    border:2px dashed var(--orange);
+    border-radius:14px;
+    padding:20px 22px;
+  }
+  .recap h3{margin-top:0; color:var(--navy);}
+  .recap ul{margin:8px 0 0; padding-left:20px;}
+  .recap li{margin-bottom:6px;}
+
+  /* Interactive widget */
+  .machine{
+    background:linear-gradient(135deg,#eef4fe,#f5f2fc);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+  }
+  .machine .controls{
+    display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; margin-bottom:16px;
+  }
+  .machine label{display:block; font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; color:var(--navy); margin-bottom:4px;}
+  .machine input[type=number]{
+    width:90px; padding:9px 10px; border-radius:8px; border:1px solid #c9c6bb; font-size:16px; font-family:'Poppins',sans-serif;
+  }
+  .machine button{
+    background:var(--navy); color:#fff; border:none; padding:10px 20px; border-radius:8px;
+    font-weight:600; cursor:pointer; font-size:14px;
+  }
+  .machine button:hover{background:var(--blue);}
+  #machineOutput{margin-top:14px;}
+  .step-line{
+    background:#fff; border-radius:10px; padding:12px 16px; margin-bottom:8px; border:1px solid var(--line);
+    font-family:'Poppins',sans-serif; font-size:14px;
+  }
+  .step-line b{color:var(--navy);}
+  .final-answer{
+    font-size:18px; font-weight:800; color:var(--red); font-family:'Poppins',sans-serif;
+    margin-top:10px;
+  }
+  .warn{color:var(--red); font-size:13px; font-family:'Poppins',sans-serif;}
+
+  /* Homework */
+  .hw-item{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    padding:12px 0;
+  }
+  .hw-item:last-of-type{border-bottom:none;}
+  .hw-num{
+    font-family:'Poppins',sans-serif; font-weight:700; color:#fff; background:var(--purple);
+    width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0;
+  }
+  .hw-prob{flex:1; min-width:220px; font-size:15px;}
+  .hw-item input[type=text]{
+    width:90px; padding:7px 9px; border-radius:8px; border:1px solid #c9c6bb; font-size:15px; font-family:'Poppins',sans-serif;
+  }
+  .feedback{font-family:'Poppins',sans-serif; font-size:13px; font-weight:600; min-width:70px;}
+  .feedback.correct{color:#1a9b6c;}
+  .feedback.incorrect{color:var(--red);}
+  .checkAllRow{margin-top:18px; display:flex; align-items:center; gap:14px;}
+  .checkAllRow button{
+    background:var(--teal); color:#fff; border:none; padding:11px 24px; border-radius:8px; font-weight:700; cursor:pointer; font-family:'Poppins',sans-serif; font-size:14px;
+  }
+  .checkAllRow button:hover{background:#0c8b8b;}
+  #scoreLine{font-family:'Poppins',sans-serif; font-weight:700; color:var(--navy);}
+
+  .bonus{
+    margin-top:16px; padding:16px 18px; background:#f5f2fc; border-radius:10px; border:1px dashed var(--purple);
+  }
+  footer{text-align:center; color:#8a8878; font-size:13px; margin-top:40px; font-family:'Poppins',sans-serif;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Grade 5 Math — Day 2</span>
+    <h1>Chapter 2 — Building the Multiplication Machine</h1>
+    <p class="sub">Turn any 2-digit x 1-digit problem into an unbreakable step-by-step machine — arrays, area models, and the standard algorithm, all connected.</p>
+    <div class="chips">
+      <span class="chip">Module 1, Unit 2</span>
+      <span class="chip">Multi-digit multiplication</span>
+      <span class="chip">Standard algorithm</span>
+      <span class="chip">Regrouping</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <p class="hook">Yesterday you cracked the code of big numbers. Today you build a machine — a reliable set of steps that turns any 2-digit number times a 1-digit number into an answer you can trust, every single time. The machine has three settings: Concrete (build it), Pictorial (draw it), and Abstract (just do it fast). Once you understand why the machine works, you'll never need to guess again.</p>
+  </section>
+
+  <section>
+    <div class="band blue"><span class="tag">Stage 1</span> Concrete — Build the Array</div>
+    <div class="card">
+      <p>Picture 23 x 4 as four rows of 23 objects. Split every row into 2 tens and 3 ones so the tens and ones stay separate — that split is the whole secret of the machine.</p>
+      <div class="array-grid">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot ones"></div><div class="dot ones"></div><div class="dot ones"></div>
+      </div>
+      <p style="font-size:13px; color:#666;">One row of 23 = 20 (blue tens) + 3 (orange ones). Four rows like this, stacked, is 23 x 4.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="band teal"><span class="tag">Stage 2</span> Pictorial — The Area Model</div>
+    <div class="card">
+      <p>Instead of counting dots, draw 23 x 4 as a rectangle and slice it where the tens meet the ones. Now you have two easy rectangles instead of one hard one.</p>
+      <div class="area-model">
+        <div class="block tens">20 x 4 = 80<small>the "tens" chunk</small></div>
+        <div class="block ones">3 x 4 = 12<small>the "ones" chunk</small></div>
+      </div>
+      <p><b>80 + 12 = 92</b>, so 23 x 4 = 92. Every 2-digit x 1-digit problem splits this same way.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="band orange"><span class="tag">Stage 3</span> Abstract — The Standard Algorithm</div>
+    <div class="card">
+      <div class="callout orange">
+        <h4>Worked Example A — No regrouping</h4>
+        <p><span class="step">Step 1.</span> 21 x 4 &nbsp;-&gt;&nbsp; multiply the ones: 1 x 4 = 4</p>
+        <p><span class="step">Step 2.</span> Multiply the tens: 2 x 4 = 8</p>
+        <p><span class="step">Step 3.</span> Put them together: 84</p>
+        <p style="color:#666; font-size:13px;">Estimate check: 20 x 4 = 80, and 84 is close to 80 -- reasonable.</p>
+      </div>
+      <div class="callout orange">
+        <h4>Worked Example B — With regrouping</h4>
+        <p><span class="step">Step 1.</span> 23 x 4 &nbsp;-&gt;&nbsp; multiply the ones: 3 x 4 = 12. Write the 2, carry the 1 ten.</p>
+        <p><span class="step">Step 2.</span> Multiply the tens: 2 x 4 = 8, then add the carried 1: 8 + 1 = 9</p>
+        <p><span class="step">Step 3.</span> Answer: 92 — matches the area model above!</p>
+        <p style="color:#666; font-size:13px;">Estimate check: 20 x 4 = 80, and 92 is close to 80 -- reasonable.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band purple"><span class="tag">Word Problem</span> Bar-Model First, Then Solve</div>
+    <div class="card">
+      <p><b>A school auditorium has 34 rows of seats, with 6 seats in every row. How many seats in all?</b></p>
+      <div class="bar-model">
+        <div class="bar-row">
+          <div class="bar-seg" style="flex:1;">34</div>
+          <div class="bar-seg" style="flex:1;">34</div>
+          <div class="bar-seg" style="flex:1;">34</div>
+          <div class="bar-seg" style="flex:1;">34</div>
+          <div class="bar-seg" style="flex:1;">34</div>
+          <div class="bar-seg" style="flex:1;">34</div>
+        </div>
+        <div class="bar-total">6 equal bars of 34 -- total seats = 34 x 6</div>
+      </div>
+      <p><span class="step">Step 1.</span> Split 34 into 30 + 4. &nbsp; <span class="step">Step 2.</span> 30 x 6 = 180, and 4 x 6 = 24. &nbsp; <span class="step">Step 3.</span> 180 + 24 = <b>204 seats</b>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="band navy"><span class="tag">Try It</span> The Multiplication Machine</div>
+    <div class="machine">
+      <p style="font-family:&#39;Poppins&#39;,sans-serif; font-size:14px; color:#3a3f52; margin-top:0;">Feed the machine a 2-digit number and a 1-digit number. It will split, multiply, and show every step.</p>
+      <div class="controls">
+        <div>
+          <label>2-digit number (10-99)</label>
+          <input type="number" id="mNum1" min="10" max="99" value="23">
+        </div>
+        <div>
+          <label>1-digit number (2-9)</label>
+          <input type="number" id="mNum2" min="2" max="9" value="4">
+        </div>
+        <button onclick="runMachine()">Run the Machine</button>
+      </div>
+      <div id="machineOutput"><div class="step-line"><b>Step 1.</b> Split 23 into 20 + 3.</div><div class="step-line"><b>Step 2.</b> Tens chunk: 20 x 4 = 80</div><div class="step-line"><b>Step 3.</b> Ones chunk: 3 x 4 = 12</div><div class="step-line"><b>Step 4.</b> Ones product is 10 or more, so carry 1 ten into the tens column.</div><div class="step-line"><b>Step 5.</b> Add the chunks: 80 + 12 = 92</div><div class="step-line" style="background:#eef4fe;"><b>Estimate check:</b> round 23 to 20, so 20 x 4 = 80. Our exact answer 92 should be close to that.</div><div class="final-answer">23 x 4 = 92</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="band teal"><span class="tag">Recap</span> What the Machine Taught You</div>
+    <div class="recap">
+      <h3>Lock this in before homework</h3>
+      <ul>
+        <li>Every 2-digit x 1-digit problem splits into a tens part and a ones part -- that's true whether you're building, drawing, or using the standard algorithm.</li>
+        <li>Regrouping just means: if the ones product is 10 or more, write the ones digit and carry the tens digit over to add into the tens product.</li>
+        <li>Always estimate first (round to the nearest ten) so you can catch a mistake before you commit to an answer.</li>
+        <li>Word problems with equal groups -- rows of seats, boxes of apples, minutes per day -- are multiplication. Draw the bar model first.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="band red"><span class="tag">Homework</span> Practice Set — Check Your Own Work</div>
+    <div class="card">
+      <p style="font-family:&#39;Poppins&#39;,sans-serif; font-size:13px; color:#666; margin-top:0;">Type your answer in each box, then press "Check My Answers" at the bottom. Green means correct -- red means try that one again.</p>
+
+      <div class="hw-item">
+        <div class="hw-num">1</div>
+        <div class="hw-prob">12 x 4 = </div>
+        <input type="text" class="hw-answer" data-answer="48">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">2</div>
+        <div class="hw-prob">31 x 3 = </div>
+        <input type="text" class="hw-answer" data-answer="93">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">3</div>
+        <div class="hw-prob">42 x 2 = </div>
+        <input type="text" class="hw-answer" data-answer="84">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">4</div>
+        <div class="hw-prob">16 x 5 = &nbsp;<span style="color:#999; font-size:12px;">(regrouping!)</span></div>
+        <input type="text" class="hw-answer" data-answer="80">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">5</div>
+        <div class="hw-prob">27 x 3 = &nbsp;<span style="color:#999; font-size:12px;">(regrouping!)</span></div>
+        <input type="text" class="hw-answer" data-answer="81">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">6</div>
+        <div class="hw-prob">38 x 4 = &nbsp;<span style="color:#999; font-size:12px;">(regrouping!)</span></div>
+        <input type="text" class="hw-answer" data-answer="152">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">7</div>
+        <div class="hw-prob">45 x 6 = &nbsp;<span style="color:#999; font-size:12px;">(regrouping!)</span></div>
+        <input type="text" class="hw-answer" data-answer="270">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">8</div>
+        <div class="hw-prob">53 x 7 = &nbsp;<span style="color:#999; font-size:12px;">(regrouping!)</span></div>
+        <input type="text" class="hw-answer" data-answer="371">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">9</div>
+        <div class="hw-prob">A van has 24 seats. There are 5 vans. How many seats total? (Draw a bar model first!)</div>
+        <input type="text" class="hw-answer" data-answer="120">
+        <span class="feedback"></span>
+      </div>
+      <div class="hw-item">
+        <div class="hw-num">10</div>
+        <div class="hw-prob">A baker makes 18 muffins per tray, using 6 trays. How many muffins in all?</div>
+        <input type="text" class="hw-answer" data-answer="108">
+        <span class="feedback"></span>
+      </div>
+
+      <div class="checkAllRow">
+        <button onclick="checkAll()">Check My Answers</button>
+        <span id="scoreLine"></span>
+      </div>
+
+      <div class="bonus">
+        <b style="font-family:&#39;Poppins&#39;,sans-serif; color:var(--purple); font-size:14px;">Bonus -- Find the Mistake</b>
+        <p style="margin-bottom:0;">A classmate solved 29 x 6 and got 174. Estimate first (round 29 to 30: 30 x 6 = 180). Is 174 reasonable? Work the problem the careful way and see if you agree.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>Grade 5 Math Daily -- Day 2 -- Building the Multiplication Machine</footer>
+</div>
+
+<script>
+function runMachine(){
+  var a = parseInt(document.getElementById('mNum1').value, 10);
+  var b = parseInt(document.getElementById('mNum2').value, 10);
+  var out = document.getElementById('machineOutput');
+  out.innerHTML = '';
+
+  if(isNaN(a) || isNaN(b) || a < 10 || a > 99 || b < 2 || b > 9){
+    out.innerHTML = '<p class="warn">Please enter a 2-digit number (10-99) and a 1-digit number (2-9).</p>';
+    return;
+  }
+
+  var tens = Math.floor(a/10) * 10;
+  var ones = a % 10;
+  var tensProduct = tens * b;
+  var onesProduct = ones * b;
+  var total = tensProduct + onesProduct;
+  var estimateBase = Math.round(a/10) * 10;
+  var estimate = estimateBase * b;
+
+  var html = '';
+  html += '<div class="step-line"><b>Step 1.</b> Split ' + a + ' into ' + tens + ' + ' + ones + '.</div>';
+  html += '<div class="step-line"><b>Step 2.</b> Tens chunk: ' + tens + ' x ' + b + ' = ' + tensProduct + '</div>';
+  html += '<div class="step-line"><b>Step 3.</b> Ones chunk: ' + ones + ' x ' + b + ' = ' + onesProduct + '</div>';
+  if(onesProduct >= 10){
+    html += '<div class="step-line"><b>Step 4.</b> Ones product is 10 or more, so carry ' + Math.floor(onesProduct/10) + ' ten into the tens column.</div>';
+  }
+  html += '<div class="step-line"><b>Step 5.</b> Add the chunks: ' + tensProduct + ' + ' + onesProduct + ' = ' + total + '</div>';
+  html += '<div class="step-line" style="background:#eef4fe;"><b>Estimate check:</b> round ' + a + ' to ' + estimateBase + ', so ' + estimateBase + ' x ' + b + ' = ' + estimate + '. Our exact answer ' + total + ' should be close to that.</div>';
+  html += '<div class="final-answer">' + a + ' x ' + b + ' = ' + total + '</div>';
+
+  out.innerHTML = html;
+}
+
+function checkAll(){
+  var inputs = document.querySelectorAll('.hw-answer');
+  var correctCount = 0;
+  inputs.forEach(function(inp){
+    var feedback = inp.parentElement.querySelector('.feedback');
+    var userVal = inp.value.trim();
+    var correctVal = inp.getAttribute('data-answer');
+    if(userVal === ''){
+      feedback.textContent = '';
+      feedback.className = 'feedback';
+      return;
+    }
+    if(userVal === correctVal){
+      feedback.textContent = 'Correct!';
+      feedback.className = 'feedback correct';
+      correctCount++;
+    } else {
+      feedback.textContent = 'Try again';
+      feedback.className = 'feedback incorrect';
+    }
+  });
+  document.getElementById('scoreLine').textContent = correctCount + ' out of ' + inputs.length + ' correct so far.';
+}
+
+// run machine once on load so the widget isn't empty
+runMachine();
+</script>
+
+
+
+</body></html>
